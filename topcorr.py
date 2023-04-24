@@ -1,5 +1,4 @@
 import collections
-
 import pandas as pd
 import numpy as np
 
@@ -46,16 +45,6 @@ def tmfg(data, method, dataset_name, correlation_type, alpha, step, unweighted, 
 
     if threshold_mean:
         weight_corr[weight_corr < weight_corr.mean()] = 0
-
-    # weight = "uw" if unweighted else "w"
-    # alpha_string = "_"+str(alpha) if alpha else ""
-    # filename = f'./tmfg/{dataset_name}_{method}_{correlation_type}{alpha_string}_{weight}_tmfg'
-    # try:
-    #     JS = np.load(filename + ".npy")
-    # except:
-    #     tmfg = TMFG(pd.DataFrame(weight_corr))
-    #     cliques, seps, JS = tmfg.compute_TMFG(unweighted=unweighted)
-    #     np.save(filename, JS)
     
     tmfg = TMFG(pd.DataFrame(weight_corr))
     cliques, seps, JS = tmfg.compute_TMFG(unweighted=unweighted)
@@ -73,7 +62,4 @@ def tmfg(data, method, dataset_name, correlation_type, alpha, step, unweighted, 
                 weight_corr = np.square(corr)
                 JS[np.nonzero(JS)] = weight_corr[np.nonzero(JS)]
 
-        # if edge_type == 'norm' then the correlation_type must also be normal so do nothing
-
-    
     return nx.from_numpy_matrix(JS)
