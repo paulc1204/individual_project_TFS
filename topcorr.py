@@ -52,13 +52,13 @@ def tmfg(data, method, dataset_name, correlation_type, alpha, step, unweighted, 
     if not unweighted:
         if edge_type == 'distance':
             # only square for pearson and spearman
-            if correlation_type == 'normal' and method != 'energy':
+            if correlation_type == 'linear' and method != 'energy':
                 weight_corr = np.square(corr)
                 JS[np.nonzero(JS)] = weight_corr[np.nonzero(JS)]
             JS = 1 - JS
 
         elif edge_type == 'sq':
-            if correlation_type == 'normal' and method != 'energy':
+            if correlation_type == 'linear' and method != 'energy':
                 weight_corr = np.square(corr)
                 JS[np.nonzero(JS)] = weight_corr[np.nonzero(JS)]
 

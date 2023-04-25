@@ -34,8 +34,8 @@ parser.add_argument('--cc_type', type=str, default='pearson', help="Type of corr
 parser.add_argument('--test_mode', type=str, default='local', help="Test mode: local or global parameters.")
 parser.add_argument('--centrality', type=str, default='degree', help="Centrality measure to be used.")
 parser.add_argument('--unweighted', type=str, default='false', help="If resulting TMFG will be unweighted.")
-parser.add_argument('--edge_type', type=str, default='norm', help="Edge type for calculating centrality: distance, norm, or sq")
-parser.add_argument('--corr_type', type=str, default='normal', help="Correlation type for constructing TMFG: normal or square")
+parser.add_argument('--edge_type', type=str, default='linear', help="Edge type for calculating centrality: linear, sq or distance")
+parser.add_argument('--corr_type', type=str, default='linear', help="Correlation type for constructing TMFG: linear or square")
 parser.add_argument('--subsampling_iteration', type=int, default=0, help="Subsampling iteration number")
 parser.add_argument('--do_subsampling', action='store_true', help="Subsampling iteration number")
 
@@ -258,8 +258,6 @@ def tmfg_pipeline(data_dictionary, dataset_name, classification_algo, centrality
 	
 	if data.shape[1] > 200:
 		num_features = [10, 20, 30, 50, 70, 100, 150, 200]
-		# num_features = [10, 50, 100, 150, 200]
-		# num_features = [20, 30, 70]
 	else:
 		num_features = [10, 20, 30, 50, 70]
 
@@ -280,7 +278,7 @@ def tmfg_pipeline(data_dictionary, dataset_name, classification_algo, centrality
 	del output
 
 	weight = "uw" if unweighted else "w"
-	corr_type = '' if correlation_type=='normal' else 'sqcorr_'
+	corr_type = '' if correlation_type=='linear' else 'sqcorr_'
 	output_file = open(f'./full_tmfg_cv/{classification_algo}/{dataset_name}_{corr_type}{centrality}_{weight}_{edge_type}_tmfg_full_cv.json', 'w', encoding='utf-8')
 	for dic in list_cv:
 		json.dump(dic, output_file) 
@@ -307,7 +305,7 @@ def tmfg_test_pipeline(data_dictionary, dataset_name, test_mode, classification_
 	y_test = data_dictionary['y_test']
 
 	weight = "uw" if unweighted else "w"
-	corr_type = '' if correlation_type=='normal' else 'sqcorr_'
+	corr_type = '' if correlation_type=='linear' else 'sqcorr_'
 	if test_mode == 'local':
 
 		df = pd.read_json(f'./full_tmfg_cv/{classification_algo}/{dataset_name}_{corr_type}{centrality}_{weight}_{edge_type}_tmfg_full_cv.json', lines=True)
