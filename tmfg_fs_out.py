@@ -23,7 +23,6 @@ from sklearn.metrics import *
 
 import networkx as nx
 from topcorr import *
-from customized_statistical_tests import *
 from classes_list import *
 from tmfg_core import *
 
@@ -280,7 +279,6 @@ def tmfg_pipeline(data_dictionary, dataset_name, classification_algo, centrality
 			list_cv.append(e)
 	del output
 
-	# output_file = open(f'./full_tmfg_cv/{classification_algo}/{dataset_name}_tmfg_full_cv.json', 'w', encoding='utf-8')
 	weight = "uw" if unweighted else "w"
 	corr_type = '' if correlation_type=='normal' else 'sqcorr_'
 	output_file = open(f'./full_tmfg_cv/{classification_algo}/{dataset_name}_{corr_type}{centrality}_{weight}_{edge_type}_tmfg_full_cv.json', 'w', encoding='utf-8')
@@ -383,7 +381,7 @@ for file in entire_datasets:
 	filename = get_mat_file_name(file)
 	description_dictionary = get_data_description(data_dictionary, filename, description_dictionary)
 
-if args.stage == 'CM_Computation':
+if args.stage == 'SM_Computation':
 	produce_correlation_matrix(data_dictionary[args.dataset], args.dataset, args.cc_type)
 
 elif args.stage == 'TMFG_FS':
